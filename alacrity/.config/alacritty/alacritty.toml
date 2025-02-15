@@ -1,0 +1,21 @@
+[general]
+
+import = [ "./theme.toml" ]
+
+[window]
+
+opacity = 1
+
+padding.y = 0
+padding.x = 0
+
+decorations = "Full"
+decorations_theme_variant = "Dark"
+
+[font]
+
+normal.family = "Fira Code"
+bold.family = "Fira Code SemiBold"
+
+size = 14.0
+
