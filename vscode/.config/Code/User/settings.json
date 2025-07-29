@@ -1,4 +1,4 @@
-{
+
   "editor.inlayHints.enabled": true,
   "vim.easymotion": true,
   "vim.incsearch": true,
@@ -51,6 +51,14 @@
     {
       "before": ["<leader>", "w"],
       "after": ["<C-w>"]
+    },
+    {
+      "before": ["<leader>", "f"],
+      "commands": [
+        {
+          "command": "editor.action.formatDocument"
+        }
+      ]
     }
   ],
   "vim.leader": "<space>",
@@ -73,14 +81,13 @@
   },
   "editor.stickyScroll.enabled": false,
   "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.html-language-features"
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "svelte.enable-ts-plugin": true,
   "[svelte]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "svelte.svelte-vscode"
   },
   "workbench.iconTheme": "material-icon-theme",
   "[css]": {
@@ -95,7 +102,7 @@
     "authProvider": "github"
   },
   "[scss]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.css-language-features"
   },
   "codesnap.boxShadow": "#none",
   "codesnap.containerPadding": "0",
@@ -111,5 +118,7 @@
   },
   "editor.quickSuggestions": {
     "strings": true
-  }
+  },
+  "editor.minimap.renderCharacters": false,
+  "editor.minimap.enabled": false
 }
