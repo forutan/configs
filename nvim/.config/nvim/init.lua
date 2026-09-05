@@ -49,6 +49,93 @@ vim.opt.scrolloff = 7
 -- [[ Basic Keymaps ]]
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('i', 'jj', '<Esc>')
+vim.keymap.set('n', '<leader>o', '<C-^>', { desc = 'Go to last buffer' })
+
+-- [[termianl keympa]]
+vim.keymap.set('t', 'jj', '<C-\\><C-N>', { desc = 'Exit terminal mode' })
+
+local term_buf = nil
+local term_win = nil
+
+vim.keymap.set('n', '<leader>t', function()
+  if term_win and vim.api.nvim_win_is_valid(term_win) then
+    vim.api.nvim_win_close(term_win, true)
+    term_win = nil
+    return
+  end
+
+  if term_buf and vim.api.nvim_buf_is_valid(term_buf) then
+    vim.cmd 'botright split'
+    vim.api.nvim_win_set_buf(0, term_buf)
+  else
+    vim.cmd 'botright split'
+    vim.cmd 'terminal'
+    term_buf = vim.api.nvim_get_current_buf()
+  end
+
+  term_win = vim.api.nvim_get_current_win()
+  vim.cmd 'resize 15'
+  vim.cmd 'startinsert'
+end, { desc = 'Toggle terminal' })
+
+-- [[ Netrw Explore ]]
+local netrw_float_win = nil
+local netrw_float_buf = nil
+
+local function close_netrw_float()
+  if netrw_float_win and vim.api.nvim_win_is_valid(netrw_float_win) then
+    vim.api.nvim_win_close(netrw_float_win, true)
+  end
+  netrw_float_win = nil
+  netrw_float_buf = nil
+end
+
+function ToggleNetrwFloat()
+  -- If open, close it
+  if netrw_float_win and vim.api.nvim_win_is_valid(netrw_float_win) then
+    close_netrw_float()
+    return
+  end
+
+  -- Create a scratch window (so we don’t close last window)
+  vim.cmd 'vsplit'
+  vim.cmd 'wincmd l'
+
+  -- Open netrw inside this split
+  vim.cmd 'Explore'
+
+  netrw_float_win = vim.api.nvim_get_current_win()
+  netrw_float_buf = vim.api.nvim_get_current_buf()
+
+  -- Make it floating
+  local width = math.floor(vim.o.columns * 0.8)
+  local height = math.floor(vim.o.lines * 0.8)
+  local row = math.floor((vim.o.lines - height) / 2)
+  local col = math.floor((vim.o.columns - width) / 2)
+
+  vim.api.nvim_win_set_config(netrw_float_win, {
+    relative = 'editor',
+    width = width,
+    height = height,
+    row = row,
+    col = col,
+    border = 'rounded',
+  })
+
+  -- Close when pressing q
+  vim.keymap.set('n', 'q', function()
+    close_netrw_float()
+  end, { buffer = netrw_float_buf, silent = true })
+
+  -- Close when leaving netrw (when selecting file)
+  vim.api.nvim_create_autocmd('BufLeave', {
+    buffer = netrw_float_buf,
+    once = true,
+    callback = close_netrw_float,
+  })
+end
+
+vim.keymap.set('n', '<leader>e', ToggleNetrwFloat, { silent = true })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
