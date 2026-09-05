@@ -19,3 +19,8 @@ italic = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Italic" }
 bold_italic = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Bold Italic" }
 size = 13.0  # or whatever size you prefer
 
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B\r"
